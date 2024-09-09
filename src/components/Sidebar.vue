@@ -7,7 +7,7 @@
     <nav class="nav">
       <ul>
         <li>
-          <a href="#" @click.prevent="toggleSubmenu">Мониторинг</a>
+          <a @click.prevent="toggleSubmenu">Мониторинг</a>
           <ul v-if="submenuVisible" class="submenu">
             <li>
               <router-link :to="{ name: 'Realtime' }">Реальное время</router-link>
@@ -16,13 +16,19 @@
           </ul>
         </li>
         <li>
+          <a @click.prevent="showMenuDevice">Оборудование</a>
+          <ul v-if= "deviceVisible" class="submenu">
+            <li><router-link :to="{ name: 'deviceList' }">Список оборудования</router-link></li>
+          </ul>
+        </li>
+        <li>
           <router-link :to="{ name: 'Machinecard' }">Карточка станка</router-link>
         </li>
         <li><router-link :to="{ name: 'Report' }">Отчёты</router-link></li>
         <li><router-link :to="{ name: 'Settings' }">Настройки</router-link></li>
         <br />
-        <li><router-link :to="{ name: 'deviceList' }">Device</router-link></li>
-        <li><router-link :to="{ name: 'deviceNew' }">DeviceNew</router-link></li>
+
+<!--        <li><router-link :to="{ name: 'deviceNew' }">DeviceNew</router-link></li>-->
       </ul>
     </nav>
   </aside>
@@ -33,12 +39,17 @@ export default {
   data() {
     return {
       submenuVisible: false,
+      deviceVisible:false
     };
   },
   methods: {
     toggleSubmenu() {
       this.submenuVisible = !this.submenuVisible;
     },
+
+    showMenuDevice() {
+      this.deviceVisible = !this.deviceVisible;
+    }
   },
 };
 </script>
@@ -46,6 +57,10 @@ export default {
 <style>
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  cursor: pointer;
 }
 
 .sidebar {

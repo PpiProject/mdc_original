@@ -14,14 +14,7 @@
     <main>
       <div class="filter">
         <ul>
-          <li><a href="#">Оборудование №1</a></li>
-          <li><a href="#">Оборудование №2</a></li>
-          <li><a href="#">Оборудование №3</a></li>
-          <li><a href="#">Оборудование №4</a></li>
-          <li><a href="#">Оборудование №5</a></li>
-          <li><a href="#">Оборудование №6</a></li>
-          <li><a href="#">Оборудование №7</a></li>
-          <li><a href="#">Оборудование №8</a></li>
+          <li v-for="(device, index) in devices" :key="index"><a href="#">{{device.device_name}}</a></li>
         </ul>
         <button title="Добавить оборудование!">
           <router-link :to="{ name: 'deviceNew' }">+</router-link>
@@ -31,7 +24,32 @@
   </div>
 </template>
 
-<script></script>
+<script>
+
+import axios from "axios";
+
+export default {
+  name: "deviceList",
+  data(){
+    return {
+      devices: []
+    }
+  },
+
+  methods: {
+    getAllDevice() {
+      axios.get('http://localhost:3000/api/device/list').then((response) => {
+        this.devices = response.data.device;
+      })
+    }
+  },
+
+  beforeMount() {
+    this.getAllDevice();
+  }
+}
+
+</script>
 <style>
 .deviceList {
   width: 100%;
