@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import device from "@/store/device/device";
+import displayElements from "@/store/displayElements/displayElements";
 
 export default createStore({
   state: {
@@ -10,5 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    device,
+    displayElements
   }
 })

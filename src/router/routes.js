@@ -10,6 +10,7 @@ import Machinecard from "@/components/Machinecard";
 import Report from "@/components/Report";
 import jurnal from "@/components/jurnal";
 import settingsPanel from "@/components/settingsPanel";
+import DeviceCard from "@/components/DeviceCard";
 
 const routes = [
     {
@@ -73,6 +74,14 @@ const routes = [
         name: 'settingsPanel',
         component: settingsPanel,
     },
+    {
+        path: '/device/card/:device_id?',
+        name: 'device_card',
+        component: DeviceCard,
+        props:{
+            device_id: 1
+        }
+    }
 ]
 
 export default routes;

@@ -17,6 +17,12 @@
           <input type="text" id="device_name" v-model="formData.device_name" placeholder="Введите название оборудования" />
           <label>Серийный номер</label>
           <input type="text" v-model="formData.serial_number" placeholder="серийный номер" />
+          <label>Производитель</label>
+          <input type="text" v-model="formData.manufacturer" placeholder="производитель" />
+          <label>Модель оборудования</label>
+          <input type="text" v-model="formData.device_model" placeholder="12345" />
+          <label>Описание</label>
+          <input type="text" v-model="formData.description" placeholder="Описание оборудования" />
           <label>Тип оборудования:</label>
             <select name="type_device" v-model="formData.device_type_id">
               <option v-for="(type, index) in this.type_oborud" :key="index" :value=type.type_id> {{ type.name }}</option>
@@ -41,7 +47,10 @@ export default {
         device_name: '',
         device_type_id: '',
         date_inspection: '',
-        serial_number: ''
+        serial_number: '',
+        device_model: '',
+        description: '',
+        manufacturer: ''
       },
       type_oborud: [
         {'type_id': '76f8bc4b-2fc2-4f79-ab3d-e722514ab383', 'name': 'Окрасочная камера'},
@@ -65,7 +74,7 @@ export default {
 <style scoped>
 .deviceNew {
   width: 100%;
-  height: 300px;
+  height: 500px;
   font-size: 16px;
   display: flex;
   flex-direction: column;
@@ -79,7 +88,7 @@ header {
 
 .content {
   width: 94%;
-  height: 400px;
+  height: 600px;
   background-color: rgb(236, 233, 233);
   display: flex;
   justify-content: space-around;
