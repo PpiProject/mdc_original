@@ -1,17 +1,5 @@
 <template>
   <div class="real-time">
-    <header>
-      <div class="pic">
-        <img src="@/assets/chasu_MDC.png" alt="" class="jj" />
-        <p>
-          <b>Реальное время</b> <br />
-          Эта страница предназначена для того то
-        </p>
-      </div>
-      <div class="user-info">
-        <span>Пользователь: Admin</span>
-      </div>
-    </header>
     <div class="filters">
       <label for="time-filter">Фильтры:</label>
       <select v-model="timeFilter">
@@ -23,8 +11,8 @@
     </div>
     <div class="charts">
       <div class="chart-header">
-        <button @click="viewMode = 'table'">Таблица</button>
-        <button @click="viewMode = 'line-chart'">Линейная диаграмма</button>
+        <button @click="viewMode = 'table'" class="button_table">Таблица</button>
+        <button @click="viewMode = 'line-chart'" class="button_line">Линейная диаграмма</button>
       </div>
       <div v-if="viewMode === 'table'">
         <table>
@@ -109,7 +97,10 @@ export default {
 .real-time {
   padding: 20px;
   width: 100%;
-  background-color: white;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 5px;
 }
 
 .filters {
@@ -133,7 +124,14 @@ export default {
   justify-content: space-around;
   margin-bottom: 10px;
 }
-
+.button_table {
+  background-color: #0ab3b3;
+  color: white;
+}
+.button_line {
+  background-color: #0ab3b3;
+  color: white;
+}
 button {
   border: none;
   font-size: 16px;
@@ -162,7 +160,7 @@ th {
 
 .lin-diagram {
   display: flex;
-
+  padding-left: 100px;
   width: 100%;
 }
 
@@ -172,12 +170,13 @@ th {
   margin-right: 10px;
   padding-right: 10px;
   border-right: 2px solid black;
+  padding-top: 3px;
 }
 
 .status-box {
   width: 50px;
   height: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 11px;
 }
 
 .bar-container {

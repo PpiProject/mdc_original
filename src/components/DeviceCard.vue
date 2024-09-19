@@ -1,35 +1,51 @@
-<!--
-Петя, это карточка оборудования. Я соединил фронт с бэком тут.
-Нужно привести к общему виду платформы. Сделай пожалуйста. Скорее всего в первую очередь.
-После того как все сделаешь, убери этот коммент, он не для продакшена.
--->
 <template>
-  <div>
-    <div>
-      <p>Наименование:</p>
-      <p>{{this.data_device.device_name}}</p>
+<div title="Назад" class="back">
+    <routerLink :to="{name: 'DeviceList'}">🠔</routerLink>
+  </div>
+  <hr>
+  <div class="information">
+    <div class="name_date">
+      <div>
+        <p><b>Наименование:</b></p>
+        <p>{{this.data_device.device_name}}</p>
+      </div>
+      <div>
+        <p><b>Дата поверки:</b></p>
+        <p>{{this.date_inspection}}</p>
+      </div>
     </div>
-    <div>
-      <p>Дата поверки:</p>
-      <p>{{this.date_inspection}}</p>
+
+    <div class="serial_manufacturer">
+      <div>
+        <p><b>Серийный номер:</b></p>
+        <p>{{this.data_device.serial_number}}</p>
+      </div>
+      <div>
+        <p><b>Производитель:</b></p>
+        <p>{{this.data_device.manufacturer}}</p>
+      </div>
     </div>
-    <div>
-      <p>Серийный номер:</p>
-      <p>{{this.data_device.serial_number}}</p>
+
+    <div class="model_type">
+      <div>
+        <p><b>Модель:</b></p>
+        <p>{{this.data_device.device_model}}</p>
+      </div>
+      <div>
+        <p><b>Тип оборудования:</b></p>
+        <p>ТУТ БУДЕТ ТИП</p>
+      </div>
     </div>
-    <div>
-      <p>Производитель:</p>
-      <p>{{this.data_device.manufacturer}}</p>
-    </div>
-    <div>
-      <p>Модель:</p>
-      <p>{{this.data_device.device_model}}</p>
-    </div>
-    <div>
-      <p>Описание:</p>
+
+    <div class="description">
+      <p><b>Описание:</b></p>
       <p>{{this.data_device.description}}</p>
     </div>
-    <div></div>
+  </div>
+  <hr class="line">
+  <div class="analyze">
+    <p>Статистика оборудования </p>
+    <p>НЕТ ДАННЫХ...</p>
   </div>
 </template>
 
@@ -66,5 +82,40 @@ export default {
 </script>
 
 <style scoped>
-
+a {
+  font-size: 25px;
+  border-radius: 5px;
+  border: none;
+  background-color: #0ab3b3;
+  color: white;
+  width: 40px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+.back {
+  width: 70px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.information {
+  width: 100%;
+  height: max-content;
+  display: flex;
+  justify-content: space-around;
+}
+p {
+  word-wrap: break-word;
+  width: 300px;
+}
+.analyze {
+  text-align: center;
+  display: flex;
+  margin-top: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+.line {
+  margin-top: 50px;
+}
 </style>

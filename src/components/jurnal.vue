@@ -1,18 +1,6 @@
 <template>
   <div class="jurnal">
     <main class="content">
-      <header>
-        <div class="pic">
-          <img src="@/assets/jurnal_MDC.png" alt="" class="jj" />
-          <p>
-            <b>Журнал работ</b> <br />
-            Эта страница предназначена для того то того то
-          </p>
-        </div>
-        <div class="user-info">
-          <span>Пользователь: Admin</span>
-        </div>
-      </header>
 
       <section class="filters">
         <form @submit.prevent="applyFilters">
@@ -133,49 +121,15 @@ export default {
 </script>
 
 <style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  height: auto;
-  background-color: #f5f5f5;
-}
-
 .jurnal {
   display: flex;
   flex-direction: column;
   width: 100%;
-
   background-color: #ffffff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 20px;
-}
-
-header .pic {
-  display: flex;
-  align-items: center;
-}
-
-header .pic p {
-  margin-left: 20px;
-  font-size: 16px;
-  color: #333;
-}
-
-.user-info {
-  font-size: 16px;
-  color: #555;
-}
 main {
   width: 100%;
 }
@@ -209,14 +163,15 @@ main {
 
 button[type="submit"] {
   padding: 10px 20px;
-  background-color: #dfdfdf93;
-  color: #ffffff;
+  background-color: #0ab3b3;
+  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
-  color: black;
+
+  width: max-content;
 }
 
 button[type="submit"]:hover {

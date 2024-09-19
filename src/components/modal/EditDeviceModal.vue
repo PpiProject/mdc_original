@@ -120,8 +120,13 @@ export default {
 
 .header_modal p {
   margin: 1rem 0 0 10px;
-}
 
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+}
 .btn_close {
   margin: 1rem 10px 0 0;
   width: 35px;
@@ -130,6 +135,7 @@ export default {
   background-color: #07b1b1;
   color: white;
   border-radius: 3px;
+  float: right;
 }
 
 .form_device {

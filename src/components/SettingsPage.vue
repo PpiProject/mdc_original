@@ -1,15 +1,6 @@
 <template>
   <div class="content">
-    <header class="header">
-      <div class="header-title">
-      
-        <h1>Настройки</h1>
-        <p>Данный блок предназначен для настройки пользователей</p>
-      </div>
-      <div class="user-info">
-        <span>Пользователь: Admin</span>
-      </div>
-    </header>
+
     <Settings />
   </div>
 </template>

@@ -1,15 +1,6 @@
 <template>
   <div class="report-component">
-    <div class="header">
-      <div class="verx">
-        <img src="@/assets/othet_MDC.png" alt="" className="jj" />
-        <p>
-          <b> Отчёт</b> <br />
-          Данный блок предназначен для просмотра отчётов всей работы
-        </p>
-      </div>
-      <span>Пользователь:Admin</span>
-    </div>
+
     <div class="filters">
       <div class="div1">
         <label
@@ -30,7 +21,7 @@
         </label>
       </div>
       <div class="div2">
-        <label className="pp"
+        <label class="pole"
           >Период: <input type="radio" v-model="period" value="Месяц" /> Месяц
           <input type="radio" v-model="period" value="Неделя" /> Неделя
           <input type="radio" v-model="period" value="Год" /> Год
@@ -99,22 +90,13 @@ export default {
 
 <style scoped>
 .report-component {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  width: 100%;
-  font-size: 16px;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 5px;
+  padding: 10px;
 }
 
-.verx {
-  gap: 0px;
-  width: 35%;
-  height: max-content;
-}
 .div1 {
   display: flex;
   align-items: center;
@@ -125,47 +107,36 @@ export default {
 .div2 {
   display: flex;
   flex-direction: column;
-  flex-direction: column;
-  width: 22%;
   gap: 35%;
 }
 .filters {
   display: flex;
-
   justify-content: space-between;
   gap: 20px;
   margin-bottom: 30px;
 }
 
-.filters label {
-  font-size: 14px;
-}
 
 .filters select,
 .filters input {
   margin-left: 5px;
 }
-.pp {
+.pole{
   border: 1px solid rgb(216, 215, 215);
-  padding: 1%;
+  padding: 10px;
   border-radius: 10px;
   background-color: rgb(238, 236, 236);
+  width: max-content;
 }
-.jj {
-  width: 15%;
-  height: auto;
-}
+
 .filters button {
-  background-color: none;
+  background-color: #0ab3b3;
+  color:white;
+  border: none;
   padding: 8px 16px;
-  border: 0.5px solid darkgrey;
   border-radius: 5px;
   cursor: pointer;
   width: max-content;
-  text-align: right;
-}
-.filters button:hover {
-  background-color: #d2e2f3;
 }
 
 .chart {

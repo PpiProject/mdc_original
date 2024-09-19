@@ -1,16 +1,5 @@
 <template>
   <div class="deviceNew">
-    <header>
-      <div class="pic">
-        <p>
-          <b>Страница добавления нового оборудования</b> <br />
-          Эта страница предназначена для того то того то
-        </p>
-      </div>
-      <div class="user-info">
-        <span>Пользователь: Admin</span>
-      </div>
-    </header>
       <main class="content">
         <form class="add_form" @submit.prevent="saveDevice">
           <label for="device_name">Название оборудования</label>
@@ -64,7 +53,7 @@ export default {
 
     async saveDevice() {
       axios.post('http://localhost:3000/api/device/add', this.formData).then((response) => {
-        router.push({name : 'deviceList'})
+        router.push({name : 'DeviceList'})
       })
     }
   }
@@ -74,16 +63,11 @@ export default {
 <style scoped>
 .deviceNew {
   width: 100%;
-  height: 500px;
+  height: max-content;
   font-size: 16px;
   display: flex;
   flex-direction: column;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-
-  gap: 10px;
+align-items: center;
 }
 
 .content {
@@ -92,6 +76,7 @@ header {
   background-color: rgb(236, 233, 233);
   display: flex;
   justify-content: space-around;
+  padding: 20px;
 }
 
 .content input {
@@ -103,7 +88,7 @@ header {
 }
 
 .content select{
-  width: 450px;
+  width: 472px;
   height: 40px;
   border: 1px solid lightgray;
   border-radius: 10px;
@@ -125,6 +110,7 @@ header {
 button {
   width: max-content;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .btn_add {

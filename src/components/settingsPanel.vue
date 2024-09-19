@@ -1,32 +1,5 @@
 <template>
   <div class="settings-panel">
-    <div class="verx">
-      <div class="top">
-        <img src="@/assets/nastroiki_MDC.png" alt="" class="jj" />
-        <p>
-          <b>Настройки</b> <br />
-          Данный блок предназначен для настроек пользователя
-        </p>
-      </div>
-      <span>Пользователь:Admin</span>
-    </div>
-    <div class="tabs">
-      <button @click="selectTab('settings')">
-        <router-link to="/settings" style="text-decoration: none; color: black">
-          Настройки подключения
-        </router-link>
-      </button>
-      <button @click="selectTab('management')">
-        <router-link to="/settingsPanel" style="text-decoration: none; color: black"
-          >Управление станками
-        </router-link>
-      </button>
-      <button @click="selectTab('planning')">
-        <router-link to="/SettingsStr" style="text-decoration: none; color: black">
-          Планирование</router-link
-        >
-      </button>
-    </div>
     <div class="tab-content" v-if="selectedTab === 'planning'">
       <div class="form-group">
         <label>Изменить время смен</label>
@@ -66,7 +39,6 @@ export default {
       this.selectedTab = tab;
     },
     applySettings() {
-      // handle apply settings logic here
       console.log("Settings applied:", {
         shiftTime: this.shiftTime,
         priorityDate: this.priorityDate,
@@ -81,34 +53,15 @@ export default {
 <style>
 .settings-panel {
   padding: 10px;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  width: 90%;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
   margin-left: 1%;
 }
-
-.tabs {
-  margin: 20px 0;
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid rgb(242, 239, 239);
-  padding-top: 10px;
+.tab-content {
+  padding: 20px;
 }
-
-.tabs button {
-  margin-right: 10px;
-  margin: 1%;
-  padding: 1%;
-  border: none;
-  background-color: rgb(225, 222, 222);
-  border-radius: 5px;
-  width: max-content;
-}
-
 .tab-content .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .tab-content label {
@@ -124,20 +77,10 @@ export default {
 .tab-content button {
   margin-top: 10px;
   padding: 10px 20px;
-}
-
-.verx {
-  display: flex;
-  justify-content: space-between;
-}
-
-.jj {
-  width: 20%;
-  height: auto;
-}
-
-.top {
-  display: flex;
+  background-color: #0ab3b3;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 .form-group {
@@ -150,7 +93,7 @@ export default {
 }
 
 .form-group input {
-  width: 100%;
+  width: 70%;
   padding: 8px;
   box-sizing: border-box;
   border: 1px solid #ddd;
@@ -159,7 +102,6 @@ export default {
 
 .form-group button {
   padding: 8px 16px;
-  /* background: #007bff; */
   color: rgb(0, 0, 0);
   border: 1px solid rgb(226, 224, 224);
   cursor: pointer;

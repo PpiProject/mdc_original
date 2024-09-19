@@ -1,34 +1,33 @@
 <template>
-  <aside class="sidebar">
-    <div class="logo">
-      <img src="@/assets/menu_MDC.png" alt=" " />
-      <img src="@/assets/lupa_MDC.png" alt="" />
+  <aside :class="['sidebar', { collapsed: isCollapsed }]">
+    <div class="Menu">
+      <img class="Menu-picture" src="@/assets/menu_MDC.png" alt="" @click="toggleSidebar" />
+      <img v-if="!isCollapsed" class="Lupa-picture" src="@/assets/lupa_MDC.png" alt="" />
     </div>
-    <nav class="nav">
+    <nav class="content" v-if="!isCollapsed">
       <ul>
         <li>
-          <a @click.prevent="toggleSubmenu">Мониторинг</a>
-          <ul v-if="submenuVisible" class="submenu">
+          <a @click.prevent="toggleSubmenu('monitoring')">Мониторинг</a>
+          <ul v-if="submenu.monitoring" class="submenu">
             <li>
-              <router-link :to="{ name: 'Realtime' }">Реальное время</router-link>
+              <router-link :to="{ name: 'realtime' }">Реальное время</router-link>
             </li>
             <li><router-link :to="{ name: 'jurnal' }">Журнал работ</router-link></li>
           </ul>
         </li>
         <li>
-          <a @click.prevent="showMenuDevice">Оборудование</a>
-          <ul v-if= "deviceVisible" class="submenu">
-            <li><router-link :to="{ name: 'deviceList' }">Список оборудования</router-link></li>
+          <router-link :to="{ name: 'machinecard' }">Карточка станка</router-link>
+        </li>
+        <li><router-link :to="{ name: 'report' }">Отчёты</router-link></li>
+        <li>
+          <a @click.prevent="toggleSubmenu('settings')">Настройки</a>
+          <ul v-if="submenu.settings" class="submenu">
+            <li><router-link :to="{ name: 'Settings' }">Настройки подключения</router-link></li>
+            <li><router-link :to="{ name: 'SettingsPanel' }">Управление станками</router-link></li>
+            <li><router-link :to="{ name: 'SettingsStr' }">Пользователи</router-link></li>
           </ul>
         </li>
-        <li>
-          <router-link :to="{ name: 'Machinecard' }">Карточка станка</router-link>
-        </li>
-        <li><router-link :to="{ name: 'Report' }">Отчёты</router-link></li>
-        <li><router-link :to="{ name: 'Settings' }">Настройки</router-link></li>
-        <br />
-
-<!--        <li><router-link :to="{ name: 'deviceNew' }">DeviceNew</router-link></li>-->
+        <li><router-link :to="{ name: 'DeviceList' }">Список оборудования</router-link></li>
       </ul>
     </nav>
   </aside>
@@ -38,68 +37,65 @@
 export default {
   data() {
     return {
-      submenuVisible: false,
-      deviceVisible:false
+      submenu: {
+        monitoring: false,
+        settings: false
+      },
+      isCollapsed: false
     };
   },
   methods: {
-    toggleSubmenu() {
-      this.submenuVisible = !this.submenuVisible;
+    toggleSubmenu(menu) {
+      this.submenu[menu] = !this.submenu[menu];
     },
-
-    showMenuDevice() {
-      this.deviceVisible = !this.deviceVisible;
+    toggleSidebar() {
+      this.isCollapsed = !this.isCollapsed;
     }
-  },
+  }
 };
 </script>
 
-<style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
+<style scoped>
+.sidebar {
+  width: 15%;
+  padding: 30px;
+  text-align: center;
+  transition: width 0.3s ease;
+
 }
 
-a {
+.sidebar.collapsed {
+  width: 2%;
+  background-color: white;
+}
+
+.Menu {
+  display: flex;
+  justify-content: space-between;
+  height: max-content;
+}
+
+img {
+  width: 50px;
+  height: auto;
   cursor: pointer;
 }
 
-.sidebar {
-  width: 100%;
-  background: #f4f4f4;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-.logo {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.logo img {
-  width: 25%;
-  height: auto;
-}
-
-.nav ul {
+.content ul {
   list-style: none;
   padding: 0;
 }
 
-.nav ul li {
+.content ul li {
   margin: 20px 0;
 }
 
-.nav ul li a {
+.content ul li a {
   text-decoration: none;
   color: #333;
   display: flex;
   align-items: center;
-}
-
-.nav ul li a:hover {
-  color: #007bff;
+  cursor: pointer;
 }
 
 .submenu {
@@ -112,11 +108,8 @@ a {
   margin: 10px 0;
 }
 
-.submenu li a {
-  color: #666;
-}
-
-.submenu li a:hover {
-  color: #007bff;
+.logo .menu-picture:hover {
+  cursor: pointer;
+  transform: scale(1.1);
 }
 </style>

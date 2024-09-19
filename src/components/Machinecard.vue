@@ -1,17 +1,5 @@
 <template>
   <div class="machine-card">
-    <header>
-      <div class="pic">
-        <img src="@/assets/stanok_MDC.png" alt="" class="jj" />
-        <p>
-          <b>Карточка станка</b> <br />
-          Эта страница предназначена для того то того то
-        </p>
-      </div>
-      <div class="user-info">
-        <span>Пользователь: Admin</span>
-      </div>
-    </header>
     <div class="filters">
       <label for="model">Модель:</label>
       <select id="model" v-model="selectedModel">
@@ -113,7 +101,10 @@ export default {
 <style scoped>
 .machine-card {
   padding: 20px;
-  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 5px;
 }
 
 .machine-card h1 {
@@ -163,14 +154,6 @@ export default {
   cursor: pointer;
 }
 
-.jj {
-  width: 15%;
-}
-
-.pic {
-  display: flex;
-}
-
 header {
   display: flex;
   justify-content: space-between;
@@ -179,5 +162,13 @@ header {
 }
 button {
   width: max-content;
+  color: white;
+  background-color: #0ab3b3;
+  border: none;
+}
+a {
+  text-decoration: none;
+  color: white;
+  background-color: #0ab3b3;
 }
 </style>
