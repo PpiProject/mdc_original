@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import LineChart from "./LineChart.vue";
+import LineChart from "./charts/LineChart.vue";
 import DataTable from "./DataTable.vue";
 import TableView from "./TableView.vue";
 export default {

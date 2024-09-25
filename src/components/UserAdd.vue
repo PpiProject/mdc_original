@@ -5,19 +5,23 @@
     <hr>
     <div class="section">
       <div class="content">
-        <label for="name">ФИО</label>
-        <input type="text" id="name">
+        <label for="last_name">Фамилия</label>
+        <input type="text" id="last_name" v-model="userData.last_name">
+        <label for="first_name">Имя</label>
+        <input type="text" id="first_name" v-model="userData.first_name">
+        <label for="sur_name">Отчество</label>
+        <input type="text" id="sur_name" v-model="userData.sur_name">
         <label for="job_title">Должность</label>
-        <input type="text" id="job_title">
+        <input type="text" id="job_title" v-model="userData.position">
         <label for="login">Логин</label>
-        <input type="text" id="login">
+        <input type="text" id="login" v-model="userData.login">
         <label for="password">Пароль</label>
-        <input type="text" id="password">
+        <input type="text" id="password" v-model="userData.password">
         <label for="email">Почта</label>
-        <input type="text" id="email">
+        <input type="text" id="email" v-model="userData.email">
       </div>
       <div class="footer">
-        <router-link :to="{name:'SettingsStr'}">Сохранить</router-link>
+        <button @click="addUser">Сохранить</button>
       </div>
 
     </div>
@@ -28,8 +32,32 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "UserAdd"
+  name: "UserAdd",
+
+  data(){
+    return{
+      userData:{
+        last_name: '',
+        first_name: '',
+        sur_name: '',
+        login: '',
+        password: '',
+        email: '',
+        position: ''
+      }
+    }
+  },
+
+  methods: {
+    addUser(){
+      console.log(this.userData
+      )
+      axios.post('http://localhost:3000/api/user/create', this.userData)
+    }
+  }
 }
 </script>
 
@@ -40,7 +68,7 @@ main {
 }
 section {
   width: 50%;
-  height: 650px;
+  height: 820px;
   margin: 20px;
   padding: 10px;
   border: 1px solid #f2f2f2;

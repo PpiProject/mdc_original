@@ -1,22 +1,22 @@
 import Realtime from "@/components/Realtime";
 import Tablee from "@/components/Tablee";
-import DeviceList from "@/components/DeviceList";
+import DeviceList from "@/components/deviceList";
 import deviceNew from "@/components/deviceNew";
-import LineChart from "@/components/LineChart";
+import LineChart from "@/components/charts/LineChart";
 import DataTable from "@/components/DataTable";
 import Settings from "@/components/Settings";
 import SettingsStr from "@/components/SettingsStr";
 import Machinecard from "@/components/Machinecard";
 import Report from "@/components/Report";
 import jurnal from "@/components/jurnal";
-import SettingsPanel from "@/components/SettingsPanel";
+import SettingsPanel from "@/components/settingsPanel";
 import DeviceCard from "@/components/DeviceCard";
 import UserAdd from "@/components/UserAdd";
 import LoginForm from "@/components/LoginForm";
 import UserCard from "@/components/UserCard";
 const routes = [
     {
-        path:'/LoginForm',
+        path:'/login/auth',
         name: 'LoginForm',
         component: LoginForm,
     },
@@ -34,21 +34,21 @@ const routes = [
         component: Tablee,
     },
     {
-        path: '/DeviceList',
+        path: '/device/list',
         name: 'DeviceList',
         component: DeviceList,
         meta: { headerImage: 'stanok_MDC',
             headerText: 'Cтраница отображения подключённого оборудования' },
     },
     {
-        path: '/deviceNew',
+        path: '/device/new',
         name: 'deviceNew',
         component: deviceNew,
         meta: { headerImage: 'stanok_MDC',
             headerText: 'Cтраница  редакирования оборудования' },
     },
     {
-        path: '/linechart',
+        path: '/line-chart',
         name: 'linechart',
         component: LineChart,
     },
@@ -59,7 +59,7 @@ const routes = [
     },
 
     {
-        path: '/SettingsStr',
+        path: '/settings/users',
         name: 'SettingsStr',
         component: SettingsStr,
         meta: { headerImage: 'nastroiki_MDC',
@@ -80,7 +80,7 @@ const routes = [
             headerText: 'Cтраница для вывода отчётной информаци' },
     },
     {
-        path: '/Settings',
+        path: '/settings/connections',
         name: 'Settings',
         component: Settings,
         meta: { headerImage: 'nastroiki_MDC',
@@ -94,7 +94,7 @@ const routes = [
             headerText: 'Cтраница со статистикой работы оборудования' },
     },
     {
-        path: '/SettingsPanel',
+        path: '/settings/devices',
         name: 'SettingsPanel',
         component: SettingsPanel,
         meta: { headerImage: 'nastroiki_MDC',
@@ -111,7 +111,7 @@ const routes = [
             headerText: 'Cтраница настроек оборудования' },
     },
     {
-        path: '/UserAdd',
+        path: '/user/new',
         name: 'UserAdd',
         component: UserAdd,
     },

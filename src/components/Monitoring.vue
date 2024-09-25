@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import LineChart from './LineChart.vue';
+import LineChart from './charts/LineChart.vue';
 import DataTable from './DataTable.vue';
 
 export default {

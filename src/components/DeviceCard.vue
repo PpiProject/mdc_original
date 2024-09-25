@@ -67,7 +67,6 @@ export default {
 
       axios.get(`http://localhost:3000/api/device/card/${this.device_id}`).then((response) => {
 
-        console.log(response.data.device)
         this.data_device = response.data.device
         let date = new Date(response.data.device.date_inspection)
         let month = translateMonth((date.getMonth() + 1));
