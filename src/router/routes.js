@@ -1,19 +1,20 @@
 import Realtime from "@/components/Realtime";
 import Tablee from "@/components/Tablee";
-import DeviceList from "@/components/deviceList";
-import deviceNew from "@/components/deviceNew";
+import DeviceList from "@/components/devices/deviceList";
+import deviceNew from "@/components/devices/deviceNew";
 import LineChart from "@/components/charts/LineChart";
 import DataTable from "@/components/DataTable";
 import Settings from "@/components/Settings";
-import SettingsStr from "@/components/SettingsStr";
+import UserList from "@/components/users/UserList";
 import Machinecard from "@/components/Machinecard";
 import Report from "@/components/Report";
 import jurnal from "@/components/jurnal";
 import SettingsPanel from "@/components/settingsPanel";
-import DeviceCard from "@/components/DeviceCard";
-import UserAdd from "@/components/UserAdd";
+import DeviceCard from "@/components/devices/DeviceCard";
+import UserAdd from "@/components/users/UserAdd";
 import LoginForm from "@/components/LoginForm";
-import UserCard from "@/components/UserCard";
+import UserCard from "@/components/users/UserCard";
+import ManageRoles from "@/components/roles/ManageRoles";
 const routes = [
     {
         path:'/login/auth',
@@ -61,7 +62,7 @@ const routes = [
     {
         path: '/settings/users',
         name: 'SettingsStr',
-        component: SettingsStr,
+        component: UserList,
         meta: { headerImage: 'nastroiki_MDC',
             headerText: 'Cтраница со списком пользователей' },
     },
@@ -120,6 +121,11 @@ const routes = [
         name: 'UserCard',
         component: UserCard,
     },
+    {
+        path: '/settings/roles_and_permissions',
+        name: 'ManageRoles',
+        component: ManageRoles
+    }
 ]
 
 export default routes;

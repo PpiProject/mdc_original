@@ -25,6 +25,7 @@
             <li><router-link :to="{ name: 'Settings' }">Настройки подключения</router-link></li>
             <li><router-link :to="{ name: 'SettingsPanel' }">Управление станками</router-link></li>
             <li><router-link :to="{ name: 'SettingsStr' }">Пользователи</router-link></li>
+            <li><router-link :to="{ name: 'ManageRoles' }">Управление ролями и разрешениями</router-link></li>
           </ul>
         </li>
         <li><router-link :to="{ name: 'DeviceList' }">Список оборудования</router-link></li>

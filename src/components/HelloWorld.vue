@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AddDevice from "@/components/AddDevice";
+import AddDevice from "@/components/devices/AddDevice";
 export default {
   name: 'HelloWorld',
   components: {AddDevice},

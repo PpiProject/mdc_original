@@ -1,5 +1,5 @@
 <template>
-<div title="Назад" class="back">
+  <div title="Назад" class="back">
     <routerLink :to="{name: 'DeviceList'}">🠔</routerLink>
   </div>
   <hr>
@@ -7,29 +7,29 @@
     <div class="name_date">
       <div>
         <p><b>Наименование:</b></p>
-        <p>{{this.data_device.device_name}}</p>
+        <p>{{ this.data_device.device_name }}</p>
       </div>
       <div>
         <p><b>Дата поверки:</b></p>
-        <p>{{this.date_inspection}}</p>
+        <p>{{ this.date_inspection }}</p>
       </div>
     </div>
 
     <div class="serial_manufacturer">
       <div>
         <p><b>Серийный номер:</b></p>
-        <p>{{this.data_device.serial_number}}</p>
+        <p>{{ this.data_device.serial_number }}</p>
       </div>
       <div>
         <p><b>Производитель:</b></p>
-        <p>{{this.data_device.manufacturer}}</p>
+        <p>{{ this.data_device.manufacturer }}</p>
       </div>
     </div>
 
     <div class="model_type">
       <div>
         <p><b>Модель:</b></p>
-        <p>{{this.data_device.device_model}}</p>
+        <p>{{ this.data_device.device_model }}</p>
       </div>
       <div>
         <p><b>Тип оборудования:</b></p>
@@ -39,13 +39,31 @@
 
     <div class="description">
       <p><b>Описание:</b></p>
-      <p>{{this.data_device.description}}</p>
+      <p>{{ this.data_device.description }}</p>
     </div>
   </div>
   <hr class="line">
   <div class="analyze">
-    <p>Статистика оборудования </p>
-    <p>НЕТ ДАННЫХ...</p>
+    <div class="analyze_title">Статистика оборудования</div>
+    <div class="filter_container">
+      <div class="filter_title">Фильтр:</div>
+      <div class="vision_title">Виды предоставления отчета:</div>
+
+    </div>
+  </div>
+  <div class="inputs_container">
+    <div class="dates_inputs">
+      <p>Период с</p>
+      <input class="date_input" type="date">
+    </div>
+    <div class="dates_inputs">
+      <p>по</p>
+      <input class="date_input" type="date">
+    </div>
+    <div class="chart-buttons">
+      <button>Таблица</button>
+      <button>График</button>
+    </div>
   </div>
 </template>
 
@@ -55,14 +73,14 @@ import translateMonth from "@/utils/translateMonth";
 
 export default {
   name: "DeviceCard",
-  data(){
-    return{
+  data() {
+    return {
       data_device: {},
       device_id: this.$route.query.device_id,
       date_inspection: ''
     }
   },
-  methods:{
+  methods: {
     getDataDevice() {
 
       axios.get(`http://localhost:3000/api/device/card/${this.device_id}`).then((response) => {
@@ -92,29 +110,89 @@ a {
   display: flex;
   justify-content: center;
 }
+
 .back {
   width: 70px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .information {
   width: 100%;
   height: max-content;
   display: flex;
   justify-content: space-around;
 }
-p {
-  word-wrap: break-word;
-  width: 300px;
+
+.line {
+  margin-top: 50px;
 }
+
 .analyze {
-  text-align: center;
   display: flex;
   margin-top: 30px;
   flex-direction: column;
   align-items: center;
 }
-.line {
+
+.analyze_title {
+  word-wrap: break-word;
+  width: 300px;
+}
+
+.filter_container {
   margin-top: 50px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+}
+
+.filter_title {
+  margin-left: 350px;
+}
+
+.vision_title {
+  margin-left: 600px;
+}
+
+.inputs_container {
+  display: flex;
+  margin-left: 150px;
+  align-items: center;
+}
+
+.dates_inputs {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.date_input {
+  margin-left: 30px;
+  padding-left: 1rem;
+  width: 120px;
+  display: flex;
+  height: 30px;
+  align-items: center;
+}
+
+.date_input input {
+  width: 100px;
+}
+
+.chart-buttons {
+  margin-left: 350px;
+  width: 400px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.chart-buttons button {
+  width: 150px;
+  height: 35px;
+  background-color: #0ab3b3;
+  color: white;
+  border: none;
+  border-radius: 3px;
 }
 </style>

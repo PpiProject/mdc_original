@@ -53,8 +53,7 @@ export default {
 
   methods: {
     addUser(){
-      console.log(this.userData
-      )
+      console.log(this.userData)
       axios.post('http://localhost:3000/api/user/create', this.userData)
     }
   }

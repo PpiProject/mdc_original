@@ -10,21 +10,22 @@
               <th> Пользователи:</th>
               <th>ФИО:</th>
               <th>Права доступа:</th>
+              <th>Логин</th>
               <th colspan="2"> </th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr v-for="(user_item, index) in this.userList" :key="index">
               <td>
                 Пользователь
               </td>
-              <td>Иванов Иван Иванович</td>
-              <td>Администратор</td>
+              <td>{{user_item.last_name}} {{user_item.first_name}} {{user_item.sur_name}}</td>
+              <td>{{user_item.position}}</td>
               <td>
-                <a href="#" @click="getUserId()" class="button_edit" title="Редактировать">Редактировать</a>
+                <button @click="getUserId(user_item.user_id)" class="button_edit" title="Редактировать">Редактировать</button>
               </td>
               <td>
-                <a href="#" @click="deleteUser()" class="button_remove" title="Удалить">Удалить</a>
+                <button @click="deleteUser(user_item.user_id)" class="button_remove" title="Удалить">Удалить</button>
               </td>
             </tr>
             </tbody>
@@ -38,16 +39,37 @@
 import axios from "axios";
 
 export default {
-  name: "SettingsStr",
+  name: "UserList",
 
+  data(){
+    return{
+      userList: []
+    }
+  },
  methods: {
-   deleteUser() {
 
+    getAllUsers(){
+      axios.get('http://localhost:3000/api/users/list').then((response) => {
+        console.log(response.data.users)
+        this.userList = response.data.users;
+      })
+    },
+
+   deleteUser(user_id) {
+     console.log(user_id)
+     axios.post(`http://localhost:3000/api/users/delete/${user_id}`).then((response) => {
+       this.userList = this.userList.filter(element => element.user_id !== user_id);
+     })
    },
-   getUserId (){
 
+   getUserId (user_id){
+     console.log(user_id);
    }
- }
+ },
+
+  beforeMount() {
+    this.getAllUsers();
+  }
 }
 </script>
 
