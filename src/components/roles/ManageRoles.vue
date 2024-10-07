@@ -1,4 +1,4 @@
-<template>
+3<template>
   <div class="role_perm_title">Управление ролями и разрешениями</div>
   <div class="container_roles">
     <div class="role_item" v-for="(role, index) in this.arrRoles" :key="index">
@@ -6,14 +6,22 @@
       <div class="container_permissions">
         <div class="inputs_labels" v-for="(permission, index_perm) in this.arrPermissions" :key="index_perm">
           <div>
-            <input class="check" type="checkbox" id="per_id">
+            <input
+                class="check"
+                type="checkbox"
+                :id="'per_' + index + '_' + index_perm"
+                v-model="arrRoles[index].permissions[permission.permission_name]">
           </div>
-          <label class="labels_chekbox" for="per_id">{{permission.permission_name}}</label>
+          <label
+              class="labels_chekbox"
+              :for="'per_' + index + '_' + index_perm">
+            {{permission.permission_name}}
+          </label>
         </div>
       </div>
     </div>
   </div>
-  <button class="save_btn">Сохранить</button>
+  <button class="save_btn" @click="savePermissions">Сохранить</button>
 </template>
 
 <script>
@@ -34,8 +42,11 @@ export default {
   methods:{
     getAllRoles() {
       axios.get('http://localhost:3000/api/roles/list').then((response) => {
-        this.arrRoles = response.data.roles
-      })
+        this.arrRoles = response.data.roles.map(role => ({
+          ...role,
+          permissions: {}
+        }));
+      });
     },
 
     getAllPermissions() {
@@ -49,6 +60,22 @@ export default {
         })
         console.log(this.arrPermissions)
       })
+    },
+    savePermissions() {
+      const dataToSend = this.arrRoles.map(role => {
+        return {
+          role_id: role.id,
+          permissions: role.permissions
+        };
+      });
+
+      axios.post('http://localhost:3000/api/roles/savePermissions', dataToSend)
+          .then(response => {
+            console.log("Разрешения успешно сохранены", response);
+          })
+          .catch(error => {
+            console.error("Ошибка при сохранении разрешений", error);
+          });
     }
   },
 
