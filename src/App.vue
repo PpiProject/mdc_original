@@ -1,10 +1,8 @@
-
 <template>
-
   <div id="app">
-    <Sidebar v-if="!isLoginRoute" />
+    <Sidebar v-if="!isLoginPage" />
     <div class="main-content">
-      <Header v-if="!isLoginRoute" />
+      <Header v-if="!isLoginPage" />
       <router-view />
     </div>
   </div>
@@ -14,17 +12,88 @@
 import Sidebar from './components/Sidebar.vue';
 import Header from './components/Header.vue';
 export default {
+  data() {
+    return {
+      inactivityTimeout: null, // Таймер бездействия
+      logoutTime: 100
+    };
+  },
   name: 'App',
   components: {
     Sidebar,
     Header
   },
   computed: {
-    isLoginRoute() {
-      return this.$route.name === 'LoginForm'; // Проверка, находитесь ли вы на странице авторизации
+    // Получаем информацию о том, авторизован ли пользователь из Vuex
+    isAuthenticated() {
+      return this.$store.state.auth.auth;
+    },
+    isLoginPage() {
+      return this.$route.name === 'LoginForm';
+    }
+  },
+
+  watch: {
+    // Слежение за состоянием авторизации
+    isAuthenticated(newVal) {
+      if (!newVal) {
+        this.redirectToLogin();
+      }
+    }
+  },
+
+  methods: {
+    // Метод для перенаправления на страницу авторизации
+    redirectToLogin() {
+      this.$router.replace({name: 'LoginForm'});
+    }
+  },
+  resetInactivityTimeout() {
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
+    }
+
+    this.inactivityTimeout = setTimeout(() => {
+      this.logoutUser();
+    }, this.logoutTime);
+  },
+
+  // Глобальный логаут
+  logoutUser() {
+    this.$store.dispatch('auth/logout').then(() => {
+      this.$router.replace({ name: 'LoginForm' }); // Перенаправляем на страницу логина
+    });
+  },
+
+  // Обработчик событий активности
+  activityListener() {
+    this.resetInactivityTimeout();
+  },
+  mounted() {
+    // Проверяем, авторизован ли пользователь при монтировании компонента
+    if (!this.isAuthenticated) {
+      this.redirectToLogin();
+    }
+    // Отслеживаем события активности
+    window.addEventListener('mousemove', this.activityListener);
+    window.addEventListener('keydown', this.activityListener);
+    window.addEventListener('scroll', this.activityListener);
+
+    // Сразу запускаем таймер для отслеживания бездействия
+    this.resetInactivityTimeout();
+  },
+  beforeUnmount() {
+    // Очищаем обработчики событий
+    window.removeEventListener('mousemove', this.activityListener);
+    window.removeEventListener('keydown', this.activityListener);
+    window.removeEventListener('scroll', this.activityListener);
+
+    // Очищаем таймер
+    if (this.inactivityTimeout) {
+      clearTimeout(this.inactivityTimeout);
     }
   }
-}
+};
 </script>
 
 <style>

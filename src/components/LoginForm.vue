@@ -5,8 +5,8 @@
       <p>
         <b> Авторизация</b>
       </p>
-      <input type="text" id="login" v-model="userData.login" placeholder="Введите логин">
-      <input type="text" id="password" v-model="userData.password" placeholder="Введите пароль">
+      <input type="text" id="login" v-model="userData.login" placeholder="Введите логин" required>
+      <input type="password" id="password" v-model="userData.password" placeholder="Введите пароль" required >
       <div>
         <button @click="loginUser">Войти</button>
       </div>
@@ -40,9 +40,11 @@ export default {
 
     loginUser(e){
       e.preventDefault()
+      console.log(this.userData)
       axios.post('http://localhost:3000/api/users/auth', this.userData).then((response) => {
         console.log(response.data);
         this.$store.dispatch('auth/addUserData', response.data.findUser.user_id)
+        this.$router.replace({ name: 'realtime' });
       });
     }
   }

@@ -1,3 +1,5 @@
 export default {
-    user_id: ''
+    user_id: '',
+    auth: false,
+    user: null
 }
