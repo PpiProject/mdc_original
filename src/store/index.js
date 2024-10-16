@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import device from "@/store/device/device";
 import displayElements from "@/store/displayElements/displayElements";
+import auth from "@/store/auth/auth";
 
 export default createStore({
   state: {
@@ -13,6 +14,7 @@ export default createStore({
   },
   modules: {
     device,
-    displayElements
+    displayElements,
+    auth
   }
 })

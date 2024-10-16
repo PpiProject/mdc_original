@@ -1,4 +1,4 @@
-3<template>
+<template>
   <div class="role_perm_title">Управление ролями и разрешениями</div>
   <div class="container_roles">
     <div class="role_item" v-for="(role, index) in this.arrRoles" :key="index">
@@ -10,7 +10,7 @@
                 class="check"
                 type="checkbox"
                 :id="'per_' + index + '_' + index_perm"
-                v-model="arrRoles[index].permissions[permission.permission_name]">
+                v-model="arrRoles[index].permissions[permission.permission_id]">
           </div>
           <label
               class="labels_chekbox"
@@ -38,15 +38,40 @@ export default {
     }
   },
 
-
   methods:{
-    getAllRoles() {
-      axios.get('http://localhost:3000/api/roles/list').then((response) => {
-        this.arrRoles = response.data.roles.map(role => ({
-          ...role,
-          permissions: {}
-        }));
-      });
+    async getAllRoles() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/roles/list');
+        const roles = response.data.roles;
+
+        // Теперь загружаем разрешения для каждой роли
+        const rolesWithPermissions = await Promise.all(
+            roles.map(async (role) => {
+              console.log(role.role_id)
+
+              const permissionsResponse = await axios.get(`http://localhost:3000/api/permissions/getById/${role.role_id}`);
+              const permissions = permissionsResponse.data.permissions;
+
+              // Формируем объект с отмеченными разрешениями для роли
+              const permissionsMap = {};
+              permissions.forEach(permission => {
+                permissionsMap[permission.id_permission] = true; // Отмечаем как выбранное
+              });
+
+              console.log(permissionsMap)
+              // Возвращаем роль с отмеченными разрешениями
+              return {
+                ...role,
+                permissions: permissionsMap
+              };
+            })
+        );
+
+        // Присваиваем роли с разрешениями в массив
+        this.arrRoles = rolesWithPermissions;
+      } catch (error) {
+        console.error("Ошибка при получении ролей:", error);
+      }
     },
 
     getAllPermissions() {
@@ -54,22 +79,26 @@ export default {
         this.arrPermissions = response.data.permissions;
 
         this.arrPermissions.forEach((item, index) => {
-          let newName = translatePermissions(item.permission_name)
-          console.log(newName)
-          this.arrPermissions[index].permission_name = newName
-        })
-        console.log(this.arrPermissions)
-      })
+          let newName = translatePermissions(item.permission_name);
+          this.arrPermissions[index].permission_name = newName;
+        });
+      });
     },
+
     savePermissions() {
       const dataToSend = this.arrRoles.map(role => {
+        const selectedPermissions = Object.keys(role.permissions)
+            .filter(permissionId => role.permissions[permissionId]);
+
         return {
-          role_id: role.id,
-          permissions: role.permissions
+          role_id: role.role_id,
+          permissions: selectedPermissions // Собираем ID разрешений
         };
       });
 
-      axios.post('http://localhost:3000/api/roles/savePermissions', dataToSend)
+      console.log(dataToSend);
+
+      axios.post('http://localhost:3000/api/permissions/set/', dataToSend)
           .then(response => {
             console.log("Разрешения успешно сохранены", response);
           })
@@ -81,65 +110,64 @@ export default {
 
   beforeMount() {
     this.getAllRoles();
-    this.getAllPermissions()
+    this.getAllPermissions();
   }
 }
 </script>
 
 <style scoped>
+.role_perm_title {
+  margin-top: 40px;
+  font-size: 20px;
+  text-align: center;
+}
 
-  .role_perm_title{
-    margin-top: 40px;
-    font-size: 20px;
-    text-align: center;
-  }
-  .container_roles {
-    margin-top: 100px;
-    display: flex;
-    justify-content: space-evenly;
-  }
+.container_roles {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-evenly;
+}
 
-  .role_item {
-    width: 300px;
-    height: 180px;
-    border: 2px solid #2ac8b7;
-    border-radius: 3px;
-  }
+.role_item {
+  width: 300px;
+  height: 180px;
+  border: 2px solid #2ac8b7;
+  border-radius: 3px;
+}
 
-  .div_roles{
+.div_roles {
+  padding-top: 15px;
+  height: 30px;
+  text-align: center;
+  border-bottom: 1px solid #2ac8b7;
+}
 
-    padding-top: 15px;
-    height: 30px;
-    text-align: center;
-    border-bottom: 1px solid #2ac8b7;
-  }
+.container_permissions {
+  margin-top: 20px;
+}
 
-  .container_permissions {
-    margin-top: 20px;
-  }
+.inputs_labels {
+  display: flex;
+}
 
-  .inputs_labels {
-    display: flex;
-  }
+.check {
+  margin-left: 10px;
+  width: 15px;
+  height: 15px;
+}
 
-  .check {
-    margin-left: 10px;
-    width: 15px;
-    height: 15px;
-  }
+.labels_chekbox {
+  margin-left: 30px;
+}
 
-  .labels_chekbox {
-    margin-left: 30px;
-  }
-
-  .save_btn {
-    margin: 40px 0 0 170px;
-    width: 180px;
-    height: 35px;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    background-color: #0ab3b3;
-    font-size: 16px;
-  }
+.save_btn {
+  margin: 40px 0 0 170px;
+  width: 180px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #0ab3b3;
+  font-size: 16px;
+}
 </style>

@@ -1,10 +1,9 @@
 <template>
-  <main>
-    <section>
-    <h2>Добавление пользователя:</h2>
-    <hr>
-    <div class="section">
-      <div class="content">
+  <div class="form_container">
+    <div class="user_title">Добавление пользователя</div>
+
+    <form class="reg_form">
+      <div class="reg_item">
         <label for="last_name">Фамилия</label>
         <input type="text" id="last_name" v-model="userData.last_name">
         <label for="first_name">Имя</label>
@@ -13,22 +12,30 @@
         <input type="text" id="sur_name" v-model="userData.sur_name">
         <label for="job_title">Должность</label>
         <input type="text" id="job_title" v-model="userData.position">
+      </div>
+      <div class="reg_item">
         <label for="login">Логин</label>
         <input type="text" id="login" v-model="userData.login">
         <label for="password">Пароль</label>
-        <input type="text" id="password" v-model="userData.password">
+        <input type="password" id="password" v-model="userData.password">
         <label for="email">Почта</label>
-        <input type="text" id="email" v-model="userData.email">
+        <input type="email" id="email" v-model="userData.email">
       </div>
-      <div class="footer">
-        <button @click="addUser">Сохранить</button>
+      <div class="reg_item">
+        <div v-for="(role, index) in roles" :key="role.role_id">
+          <input
+              type="checkbox"
+              :id="'role_' + index"
+              :value="role.role_id"
+              v-model="selectedRoles">
+          <label :for="'role_' + index">{{ role.role_name }}</label>
+        </div>
       </div>
-
+    </form>
+    <div>
+      <button class="save_btn" @click="addUser">Сохранить</button>
     </div>
-
-  </section>
-  </main>
-
+  </div>
 </template>
 
 <script>
@@ -37,9 +44,9 @@ import axios from "axios";
 export default {
   name: "UserAdd",
 
-  data(){
-    return{
-      userData:{
+  data() {
+    return {
+      userData: {
         last_name: '',
         first_name: '',
         sur_name: '',
@@ -47,79 +54,94 @@ export default {
         password: '',
         email: '',
         position: ''
-      }
+      },
+      roles: [], // Список ролей
+      selectedRoles: [] // Выбранные роли
     }
   },
 
   methods: {
-    addUser(){
-      console.log(this.userData)
-      axios.post('http://localhost:3000/api/user/create', this.userData)
+    // Метод для получения ролей
+    getRoles() {
+      axios.get('http://localhost:3000/api/roles/list')
+          .then(response => {
+            this.roles = response.data.roles;
+          })
+          .catch(error => {
+            console.error("Ошибка при получении ролей:", error);
+          });
+    },
+
+    // Метод для добавления пользователя
+    addUser() {
+      const dataToSend = {
+        ...this.userData,
+        roles: this.selectedRoles // Добавляем выбранные роли
+      };
+
+      axios.post('http://localhost:3000/api/user/create', dataToSend)
+          .then(response => {
+            console.log("Пользователь успешно добавлен", response);
+          })
+          .catch(error => {
+            console.error("Ошибка при добавлении пользователя", error);
+          });
     }
+  },
+
+  beforeMount() {
+    this.getRoles();
   }
 }
 </script>
 
 <style scoped>
-main {
-  display: flex;
-  justify-content: center;
-}
-section {
-  width: 50%;
-  height: 820px;
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #f2f2f2;
-  background-color: rgb(236, 233, 233);
+.form_container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
 }
-hr {
-  width: 100%;
-}
-.section {
+
+.user_title {
+  margin-top: 40px;
   font-size: 20px;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-
-}
-.content {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 10px;
-  gap: 15px;
-  align-items: center;
-}
-.content label {
-  padding-left: 20px;
-}
-input {
-  width: 60%;
-  border-radius: 5px;
-  border: 1px solid lightgray;
-  height: 35px;
 }
 
-a {
- padding: 3px;
-  margin: 20px;
-  height: max-content;
-  width: max-content;
-  border: none;
-  background-color: #0ab3b3;
-  color: white;
+.reg_form {
+  margin-top: 50px;
+  width: 100%;
+  height: 500px; /* Изменено с фиксированной высоты */
+  display: flex;
+  justify-content: space-around;
+  background-color: #f6f6f6;
+}
+
+.reg_item {
+  display: flex;
+  flex-direction: column;
+}
+
+.reg_item label {
+  padding-top: 30px;
+}
+
+.reg_item input {
+  margin-top: 30px;
+  width: 300px;
+  height: 25px;
+  padding-left: 1rem;
+  border: 1px solid gray;
   border-radius: 3px;
-  text-decoration: none;
-  font-size: 18px;
-  padding: 10px;
 }
-.footer {
- display: flex;
-  justify-content: end;
+
+.save_btn {
+  margin-top: 30px;
+  width: 180px;
+  height: 35px;
+  font-size: 16px;
+  color: white;
+  background-color: #0ab3b3;
+  border: none;
+  border-radius: 3px;
 }
 </style>

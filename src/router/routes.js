@@ -9,7 +9,7 @@ import UserList from "@/components/users/UserList";
 import Machinecard from "@/components/Machinecard";
 import Report from "@/components/Report";
 import jurnal from "@/components/jurnal";
-import SettingsPanel from "@/components/SettingsPanel";
+import SettingsPanel from "@/components/settingsPanel";
 import DeviceCard from "@/components/devices/DeviceCard";
 import UserAdd from "@/components/users/UserAdd";
 import LoginForm from "@/components/LoginForm";
