@@ -26,6 +26,9 @@
           </div>
           <div class="form-group">
             <button>Применить</button>
+          <button class="but_cal">
+            <router-link :to="{ name: 'calendar' }">КАЛЕНДАРЬ</router-link>
+          </button>
           </div>
         </div>
       </div>
@@ -122,8 +125,12 @@ main {
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  margin-left: 20px;
 }
-
+a {
+  text-decoration: none;
+  color: white;
+}
 .header-title h1 {
   margin: 0;
   font-size: 1.5em;

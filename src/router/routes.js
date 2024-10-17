@@ -15,6 +15,7 @@ import UserAdd from "@/components/users/UserAdd";
 import LoginForm from "@/components/LoginForm";
 import UserCard from "@/components/users/UserCard";
 import ManageRoles from "@/components/roles/ManageRoles";
+import Calendar from "@/components/Calendar";
 const routes = [
     {
         path:'/login/auth',
@@ -125,7 +126,15 @@ const routes = [
         path: '/settings/roles_and_permissions',
         name: 'ManageRoles',
         component: ManageRoles
-    }
+    },
+    {
+        path:'/calendar',
+        name: 'calendar',
+        component: Calendar,
+        meta: { headerImage: 'othet_MDC',
+            headerText: 'Cтраница предназначена для просмотра и настройки нагрузок на персонал'
+        },
+    },
 ]
 
 export default routes;

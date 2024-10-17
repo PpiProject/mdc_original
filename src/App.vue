@@ -5,17 +5,23 @@
       <Header v-if="!isLoginPage" />
       <router-view />
     </div>
+    <!-- Отображение сообщения об ошибке -->
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
 
 <script>
 import Sidebar from './components/Sidebar.vue';
 import Header from './components/Header.vue';
+
 export default {
   data() {
     return {
       inactivityTimeout: null, // Таймер бездействия
-      logoutTime: 100
+      logoutTime: 100000,
+      errorMessage: '', // Для хранения сообщения об ошибке
+      username: '', // Поле для логина
+      password: ''  // Поле для пароля
     };
   },
   name: 'App',
@@ -45,30 +51,58 @@ export default {
   methods: {
     // Метод для перенаправления на страницу авторизации
     redirectToLogin() {
-      this.$router.replace({name: 'LoginForm'});
+      this.$router.replace({ name: 'LoginForm' });
+    },
+
+    // Метод для сброса таймера неактивности
+    resetInactivityTimeout() {
+      if (this.inactivityTimeout) {
+        clearTimeout(this.inactivityTimeout);
+      }
+
+      this.inactivityTimeout = setTimeout(() => {
+        this.logoutUser();
+      }, this.logoutTime);
+    },
+
+    // Глобальный логаут
+    logoutUser() {
+      this.$store.dispatch('auth/logout').then(() => {
+        this.$router.replace({ name: 'LoginForm' }); // Перенаправляем на страницу логина
+      });
+    },
+
+    // Обработчик событий активности
+    activityListener() {
+      this.resetInactivityTimeout();
+    },
+
+    // Отправка данных для авторизации
+    submitLogin() {
+      // Очистка предыдущей ошибки
+      this.errorMessage = '';
+
+      // Отправка данных на сервер
+      this.$axios.post('/api/login', {
+        username: this.username,
+        password: this.password
+      })
+          .then(response => {
+            // Логика после успешной авторизации (например, редирект)
+            this.$router.push({ name: 'HomePage' });
+          })
+          .catch(error => {
+            // Обработка ошибки: 400 - неправильные данные для входа
+            if (error.response && error.response.status === 400) {
+              this.errorMessage = 'Неправильный логин или пароль.';
+            } else {
+              // Общая ошибка (если сервер недоступен и т.д.)
+              this.errorMessage = 'Произошла ошибка. Попробуйте позже.';
+            }
+          });
     }
   },
-  resetInactivityTimeout() {
-    if (this.inactivityTimeout) {
-      clearTimeout(this.inactivityTimeout);
-    }
 
-    this.inactivityTimeout = setTimeout(() => {
-      this.logoutUser();
-    }, this.logoutTime);
-  },
-
-  // Глобальный логаут
-  logoutUser() {
-    this.$store.dispatch('auth/logout').then(() => {
-      this.$router.replace({ name: 'LoginForm' }); // Перенаправляем на страницу логина
-    });
-  },
-
-  // Обработчик событий активности
-  activityListener() {
-    this.resetInactivityTimeout();
-  },
   mounted() {
     // Проверяем, авторизован ли пользователь при монтировании компонента
     if (!this.isAuthenticated) {
@@ -82,6 +116,7 @@ export default {
     // Сразу запускаем таймер для отслеживания бездействия
     this.resetInactivityTimeout();
   },
+
   beforeUnmount() {
     // Очищаем обработчики событий
     window.removeEventListener('mousemove', this.activityListener);
@@ -120,5 +155,10 @@ header {
 router-view {
   flex-grow: 1;
   padding: 20px;
+}
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
 }
 </style>
