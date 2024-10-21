@@ -5,7 +5,6 @@
       <Header v-if="!isLoginPage" />
       <router-view />
     </div>
-    <!-- Отображение сообщения об ошибке -->
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>
 </template>
@@ -17,11 +16,11 @@ import Header from './components/Header.vue';
 export default {
   data() {
     return {
-      inactivityTimeout: null, // Таймер бездействия
-      logoutTime: 100000,
-      errorMessage: '', // Для хранения сообщения об ошибке
-      username: '', // Поле для логина
-      password: ''  // Поле для пароля
+      inactivityTimeout: null,
+      logoutTime: 10000000000,
+      errorMessage: '',
+      username: '',
+      password: ''
     };
   },
   name: 'App',
@@ -30,7 +29,7 @@ export default {
     Header
   },
   computed: {
-    // Получаем информацию о том, авторизован ли пользователь из Vuex
+
     isAuthenticated() {
       return this.$store.state.auth.auth;
     },
@@ -40,7 +39,6 @@ export default {
   },
 
   watch: {
-    // Слежение за состоянием авторизации
     isAuthenticated(newVal) {
       if (!newVal) {
         this.redirectToLogin();
@@ -49,12 +47,12 @@ export default {
   },
 
   methods: {
-    // Метод для перенаправления на страницу авторизации
+    // перенаправление на страницу авторизации
     redirectToLogin() {
       this.$router.replace({ name: 'LoginForm' });
     },
 
-    // Метод для сброса таймера неактивности
+    // для сброса таймера неактивности
     resetInactivityTimeout() {
       if (this.inactivityTimeout) {
         clearTimeout(this.inactivityTimeout);
@@ -65,19 +63,17 @@ export default {
       }, this.logoutTime);
     },
 
-    // Глобальный логаут
+    // логаут
     logoutUser() {
       this.$store.dispatch('auth/logout').then(() => {
-        this.$router.replace({ name: 'LoginForm' }); // Перенаправляем на страницу логина
+        this.$router.replace({ name: 'LoginForm' });
       });
     },
 
-    // Обработчик событий активности
     activityListener() {
       this.resetInactivityTimeout();
     },
 
-    // Отправка данных для авторизации
     submitLogin() {
       // Очистка предыдущей ошибки
       this.errorMessage = '';

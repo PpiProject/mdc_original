@@ -2,9 +2,9 @@
   <div class="calendar">
     <h2>Календарь нагрузки</h2>
     <div class="calendar-header">
-      <button @click="previousMonth">Предыдущий месяц</button>
-      <span>{{ currentMonthLabel }}</span>
-      <button @click="nextMonth">Следующий месяц</button>
+      <button @click="previousMonth"> <- Предыдущий месяц</button>
+      <span class="month_now">{{ currentMonthLabel }}</span>
+      <button @click="nextMonth">Следующий месяц -> </button>
     </div>
     <div class="calendar-grid">
       <div v-for="(day, index) in daysInMonth" :key="index" class="calendar-day">
@@ -15,9 +15,8 @@
         <button
             v-if="!day.assigned"
             @click="assignPersonnel(day)"
-            class="assign-btn"
-        >
-          Назначить персонал
+            class="assign-btn">
+          Назначить ответственного
         </button>
         <div v-if="day.assigned" class="assigned-personnel">
           <p>Работник: {{ day.assigned }}</p>
@@ -53,11 +52,11 @@ export default {
 
       for (let i = 1; i <= days; i++) {
         const date = new Date(year, month, i);
-        const weekDay = this.getWeekDay(date); // Получаем день недели
+        const weekDay = this.getWeekDay(date);
 
         daysArray.push({
           date: i,
-          weekDay,  // Добавляем день недели
+          weekDay,
           assigned: this.personnelAssignments[i] || null,
         });
       }
@@ -86,7 +85,6 @@ export default {
     assignPersonnel(day) {
       const workerName = prompt("Введите имя работника:");
       if (workerName) {
-        // Используем прямую запись в объект для установки значения
         this.personnelAssignments[day.date] = workerName;
       }
     },
@@ -95,15 +93,19 @@ export default {
 </script>
 
 <style scoped>
+
 .calendar {
   text-align: center;
-  font-family: Arial, sans-serif;
+  border-top: 1px solid darkgray;
 }
 
 .calendar-header {
   margin-bottom: 20px;
 }
-
+.month_now {
+  border:1px solid black;
+  padding: 5px;
+}
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

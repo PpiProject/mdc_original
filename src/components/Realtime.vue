@@ -1,12 +1,15 @@
 <template>
   <div class="real-time">
     <div class="filters">
-      <label for="time-filter">Фильтры:</label>
+      <label>Настроить отображение по:</label>
       <select v-model="timeFilter">
-        <option value="по времени">по времени</option>
+        <option value="по времени">По времени</option>
+        <option value="по времени">По степени нагрузки</option>
       </select>
       <select v-model="equipmentGroup">
-        <option value="по группе оборудования">по группе оборудования</option>
+        <option value="по группе оборудования">Лебедки</option>
+        <option value="по группе оборудования">Сушильные камеры</option>
+        <option value="по группе оборудования">Дробеструйные камеры</option>
       </select>
     </div>
     <div class="charts">
@@ -45,7 +48,9 @@
         </div>
         <div class="chart">
           <div v-for="(data, index) in chartData" :key="index" class="bar-container">
-            <span class="equipment-name">{{ data.name }}</span>
+         <router-link :to="{name:'device_card', query: {device_id: data.id}}">
+           <span class="equipment-name">{{ data.name }}</span>
+         </router-link>
             <div class="bar">
               <div class="green" :style="{ width: data.greenPercentage + '%' }"></div>
               <div class="red" :style="{ width: data.redPercentage + '%' }"></div>
@@ -58,41 +63,70 @@
   </div>
 </template>
 <script>
+import axios from "axios";
+import { mapActions } from "vuex/dist/vuex.mjs";
+
 export default {
   data() {
     return {
       timeFilter: "по времени",
       equipmentGroup: "по группе оборудования",
-      viewMode: "", // Режим отображения (таблица или линейная диаграмма)
+      viewMode: "",
       chartData: [],
       equipmentStatuses: [],
+      devices: [],
+      id_device: '',
     };
   },
   mounted() {
-    this.generateMockData();
-    this.generateRealTimeStatus();
+    this.getAllDevice();
   },
   methods: {
-    generateMockData() {
-      this.chartData = Array.from({ length: 14 }, (_, i) => ({
-        name: `Оборудование № ${i + 1}`,
-        greenPercentage: Math.random() * 60 + 20, // Работа от 20% до 80%
-        redPercentage: Math.random() * 20, // Ошибки до 20%
-        grayPercentage: Math.random() * 10, // Ожидание до 10%
+    ...mapActions('device', ['allDevices']),
+
+    getDeviceId(device_id) {
+      this.id_device = device_id
+      console.log(this.id_device)
+    },
+
+    async getAllDevice() {
+      try {
+        const response = await axios.get('http://localhost:3000/api/device/list');
+        console.log('Devices data:', response.data.device);
+        this.devices = response.data.device;
+        this.$store.dispatch('device/allDevices', this.devices);
+        this.generateChartData();
+        this.generateRealTimeStatus();
+      } catch (error) {
+        console.error('Ошибка при получении списка устройств:', error);
+      }
+    },
+
+
+    generateChartData() {
+      this.chartData = this.devices.map((device) => ({
+        id: device.device_id,
+        name: device.device_name,
+        greenPercentage: Math.random() * 60 + 20,
+        redPercentage: Math.random() * 20,
+        grayPercentage: Math.random() * 10,
       }));
     },
+
     generateRealTimeStatus() {
-      this.equipmentStatuses = Array.from({ length: 14 }, () => ({
+      this.equipmentStatuses = this.devices.map(() => ({
         color: this.getRandomStatusColor(),
       }));
     },
+
     getRandomStatusColor() {
-      const colors = ["#4CAF50", "#F44336", "#BDBDBD"]; // Зеленый, Красный, Серый
+      const colors = ["#4CAF50", "#F44336", "#BDBDBD"];
       return colors[Math.floor(Math.random() * colors.length)];
     },
   },
 };
 </script>
+
 <style scoped>
 .real-time {
   padding: 20px;
@@ -183,10 +217,12 @@ th {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  justify-content: space-between;
 }
 
 .equipment-name {
   width: 200px;
+  color: black;
 }
 
 .bar {
@@ -211,5 +247,9 @@ th {
 .gray {
   background-color: #bdbdbd;
   width: 50%;
+}
+a {
+  text-decoration: none;
+  margin-right: 10px;
 }
 </style>

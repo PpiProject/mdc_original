@@ -17,7 +17,7 @@
             <tbody>
             <tr v-for="(user_item, index) in this.userList" :key="index">
               <td>
-                Пользователь
+                 <router-link :to="{name: 'UserCard'}">Пользователь</router-link>
               </td>
               <td>{{user_item.last_name}} {{user_item.first_name}} {{user_item.sur_name}}</td>
               <td>{{user_item.position}}</td>

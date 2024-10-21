@@ -14,7 +14,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'success' // success, error, warning, info
+      default: 'Выполнено' // success, error, warning, info
     }
   },
   data() {

@@ -1,4 +1,5 @@
 <template>
+  <Notification/>
   <div class="deviceList">
     <main>
       <div class="filter">
@@ -61,10 +62,11 @@
 import axios from "axios";
 import {mapState, mapActions} from "vuex/dist/vuex.mjs";
 import EditDeviceModal from "@/components/modal/EditDeviceModal";
+import Notification from "@/components/Notification";
 
 export default {
   name: "deviceList",
-  components: {EditDeviceModal},
+  components: {Notification, EditDeviceModal},
   data() {
     return {
       devices: [],

@@ -47,7 +47,7 @@ export default {
       if (text) {
         this.headerText = text;
       } else {
-        this.headerText = 'Эта страница предназначена для того то того то'; // Текст по умолчанию
+        this.headerText = ''; // Текст по умолчанию
       }
     },
   },
