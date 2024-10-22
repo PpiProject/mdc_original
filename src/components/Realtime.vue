@@ -1,17 +1,5 @@
 <template>
   <div class="real-time">
-    <div class="filters">
-      <label>Настроить отображение по:</label>
-      <select v-model="timeFilter">
-        <option value="по времени">По времени</option>
-        <option value="по времени">По степени нагрузки</option>
-      </select>
-      <select v-model="equipmentGroup">
-        <option value="по группе оборудования">Лебедки</option>
-        <option value="по группе оборудования">Сушильные камеры</option>
-        <option value="по группе оборудования">Дробеструйные камеры</option>
-      </select>
-    </div>
     <div class="charts">
       <div class="chart-header">
         <button @click="viewMode = 'table'" class="button_table">Таблица</button>
@@ -20,37 +8,36 @@
       <div v-if="viewMode === 'table'">
         <table>
           <thead>
-            <tr>
-              <th>Оборудование</th>
-              <th>Загрузка (%)</th>
-              <th>Ошибки (%)</th>
-              <th>Ожидание (%)</th>
-            </tr>
+          <tr>
+            <th>Оборудование</th>
+            <th>Загрузка (%)</th>
+            <th>Ошибки (%)</th>
+            <th>Ожидание (%)</th>
+          </tr>
           </thead>
           <tbody>
-            <tr v-for="(data, index) in chartData" :key="index">
-              <td>{{ data.name }}</td>
-              <td>{{ data.greenPercentage.toFixed(2) }}</td>
-              <td>{{ data.redPercentage.toFixed(2) }}</td>
-              <td>{{ data.grayPercentage.toFixed(2) }}</td>
-            </tr>
+          <tr v-for="(data, index) in chartData" :key="index">
+            <td>{{ data.name }}</td>
+            <td>{{ data.greenPercentage.toFixed(2) }}</td>
+            <td>{{ data.redPercentage.toFixed(2) }}</td>
+            <td>{{ data.grayPercentage.toFixed(2) }}</td>
+          </tr>
           </tbody>
         </table>
       </div>
       <div v-if="viewMode === 'line-chart'" class="lin-diagram">
         <div class="status-container">
           <div
-            v-for="(status, index) in equipmentStatuses"
-            :key="index"
-            class="status-box"
-            :style="{ backgroundColor: status.color }"
-          ></div>
+              v-for="(device, index) in devices"
+              :key="index"
+              class="status-box"
+              :style="{ backgroundColor: getStatusColor(device.signal) }"></div>
         </div>
         <div class="chart">
           <div v-for="(data, index) in chartData" :key="index" class="bar-container">
-         <router-link :to="{name:'device_card', query: {device_id: data.id}}">
-           <span class="equipment-name">{{ data.name }}</span>
-         </router-link>
+            <router-link :to="{ name: 'device_card', query: { device_id: data.id }}">
+              <span class="equipment-name">{{ data.name }}</span>
+            </router-link>
             <div class="bar">
               <div class="green" :style="{ width: data.greenPercentage + '%' }"></div>
               <div class="red" :style="{ width: data.redPercentage + '%' }"></div>
@@ -62,66 +49,79 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
-import { mapActions } from "vuex/dist/vuex.mjs";
-
+import socket from '@/store/socket.js';
+import device from "@/store/device/device";
 export default {
   data() {
     return {
-      timeFilter: "по времени",
-      equipmentGroup: "по группе оборудования",
-      viewMode: "",
-      chartData: [],
-      equipmentStatuses: [],
+      viewMode: 'table',
       devices: [],
-      id_device: '',
+      chartData: [],
     };
   },
   mounted() {
     this.getAllDevice();
+    this.setupSocket();
   },
   methods: {
-    ...mapActions('device', ['allDevices']),
+    setupSocket() {
+      socket.on('connect', () => {
+        console.log('WebSocket connected');
+      });
 
-    getDeviceId(device_id) {
-      this.id_device = device_id
-      console.log(this.id_device)
+      socket.on('device_signals', (deviceSignals) => {
+        console.log('Received device signals:', deviceSignals);
+        deviceSignals.forEach(signalData => {
+          const device = this.devices.find(d => d.id === signalData.id);
+          if (device) {
+            device.signal = signalData.signal;
+            console.log(`Updated device ${device.id} with signal: ${device.signal}`);
+          } else {
+            console.warn(`Device with id ${signalData.id} not found`);
+          }
+        });
+      });
+
+      // Обработчик отключения сокета
+      socket.on('disconnect', () => {
+        console.log('WebSocket disconnected');
+      });
     },
 
     async getAllDevice() {
       try {
         const response = await axios.get('http://localhost:3000/api/device/list');
-        console.log('Devices data:', response.data.device);
-        this.devices = response.data.device;
-        this.$store.dispatch('device/allDevices', this.devices);
+        this.devices = response.data.device.map(device => ({
+          id: device.device_id,
+          name: device.device_name,
+          signal: 0,
+        }
+        ));
+        // console.log(`ID:' ${device.device_id}, Name: ${device.device_name}`);
+
         this.generateChartData();
-        this.generateRealTimeStatus();
       } catch (error) {
         console.error('Ошибка при получении списка устройств:', error);
       }
     },
 
+    getStatusColor(signal) {
+      console.log('Signals', signal);
+      const colors = ["#BDBDBD", "#4CAF50", "#F44336", "#FFA500"];
+      return colors[signal] || "#BDBDBD";
+    },
 
     generateChartData() {
       this.chartData = this.devices.map((device) => ({
-        id: device.device_id,
-        name: device.device_name,
+        id: device.id,
+        name: device.name,
         greenPercentage: Math.random() * 60 + 20,
         redPercentage: Math.random() * 20,
         grayPercentage: Math.random() * 10,
       }));
-    },
-
-    generateRealTimeStatus() {
-      this.equipmentStatuses = this.devices.map(() => ({
-        color: this.getRandomStatusColor(),
-      }));
-    },
-
-    getRandomStatusColor() {
-      const colors = ["#4CAF50", "#F44336", "#BDBDBD"];
-      return colors[Math.floor(Math.random() * colors.length)];
     },
   },
 };

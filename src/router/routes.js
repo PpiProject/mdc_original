@@ -16,11 +16,17 @@ import LoginForm from "@/components/LoginForm";
 import UserCard from "@/components/users/UserCard";
 import ManageRoles from "@/components/roles/ManageRoles";
 import Calendar from "@/components/Calendar";
+import WebSocketTest from "@/components/WebSocketTest";
 const routes = [
     {
         path:'/login/auth',
         name: 'LoginForm',
         component: LoginForm,
+    },
+    {
+        path:'/WebSocketTest',
+        name: 'WebSocketTest',
+        component: WebSocketTest,
     },
     {
         path: '/realtime',
