@@ -29,7 +29,8 @@
           </ul>
         </li>
         <li><router-link :to="{ name: 'DeviceList' }">Список оборудования</router-link></li>
-        <li><router-link :to="{ name: 'WebSocketTest' }">WebSocket</router-link></li>
+     <s><li><router-link :to="{ name: 'WebSocketTest' }">WebSocket</router-link></li></s>
+        <li><router-link :to="{name: 'DeviceReadingsTable'}">DeviceReadingsTable</router-link></li>
       </ul>
     </nav>
   </aside>

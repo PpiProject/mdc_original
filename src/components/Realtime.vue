@@ -1,5 +1,18 @@
 <template>
   <div class="real-time">
+    <div class="filters">
+      <label>Фильтровать:</label>
+      <select v-model="timeFilter">
+        <option value="за период">Смена</option>
+        <option value="за период">Неделя</option>
+        <option value="за период">Месяц</option>
+      </select>
+      <select v-model="quipmentGroup">
+        <option value="Группа оборудования">Дрорбеструйная камера</option>
+        <option value="Группа оборудования">Лебедка</option>
+        <option value="Группа оборудования">Сушильная камера</option>
+      </select>
+    </div>
     <div class="charts">
       <div class="chart-header">
         <button @click="viewMode = 'table'" class="button_table">Таблица</button>
@@ -53,10 +66,11 @@
 <script>
 import axios from "axios";
 import socket from '@/store/socket.js';
-import device from "@/store/device/device";
 export default {
   data() {
     return {
+      timeFilter: 'по времени',
+      equpmentGroup: 'по группе оборудования',
       viewMode: 'table',
       devices: [],
       chartData: [],
@@ -100,8 +114,6 @@ export default {
           signal: 0,
         }
         ));
-        // console.log(`ID:' ${device.device_id}, Name: ${device.device_name}`);
-
         this.generateChartData();
       } catch (error) {
         console.error('Ошибка при получении списка устройств:', error);
@@ -130,7 +142,6 @@ export default {
 <style scoped>
 .real-time {
   padding: 20px;
-  width: 100%;
   background-color: #ffffff;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;

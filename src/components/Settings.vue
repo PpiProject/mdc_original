@@ -27,7 +27,7 @@
           <div class="form-group">
             <button>Применить</button>
           <button class="but_cal">
-            <router-link :to="{ name: 'calendar' }">КАЛЕНДАРЬ</router-link>
+         <s><router-link :to="{ name: 'calendar' }">КАЛЕНДАРЬ</router-link></s>
           </button>
           </div>
         </div>

@@ -17,6 +17,7 @@ import UserCard from "@/components/users/UserCard";
 import ManageRoles from "@/components/roles/ManageRoles";
 import Calendar from "@/components/Calendar";
 import WebSocketTest from "@/components/WebSocketTest";
+import DeviceReadingsTable from "@/components/DeviceReadingsTable";
 const routes = [
     {
         path:'/login/auth',
@@ -27,6 +28,15 @@ const routes = [
         path:'/WebSocketTest',
         name: 'WebSocketTest',
         component: WebSocketTest,
+    },
+    {
+        path: '/DeviceReadingsTable',
+        name: 'DeviceReadingsTable',
+        component: DeviceReadingsTable,
+        meta: {
+            headerImage: 'nastroiki_MDC',
+            headerText: 'Отображение сигналов'
+        }
     },
     {
         path: '/realtime',
